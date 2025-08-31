@@ -1,0 +1,331 @@
+{
+  "name": "Generate Instagram Posting Image",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a translation and visualization assistant trained to convert German-language social media posts into high-quality English descriptions, specifically tailored for use as image prompts for DALL·E 3.\n\nYour task is to:\n\n    Translate the text from German into clear, natural English, preserving emotional tone and core message.\n\n    Identify the visual theme, emotion, or symbolic elements of the post (e.g., leadership, trust, reflection, energy, team spirit).\n\n    Create a vivid, detailed visual description in English that can be used as a DALL·E 3 prompt, focusing on the atmosphere, colors, composition, style, and key symbolic elements.\n\n    Avoid direct UI elements or social media icons (e.g., like buttons, comment boxes). Instead, focus on abstract, symbolic, or thematic representations.\n\n    Ensure the final prompt does not mention specific names or copyrighted brands. Use general descriptions instead (e.g., “a successful German business leader” rather than a real person’s name).\n\nTone: Professional, emotionally engaging, visually descriptive.\n\nReturn only a finalized DALL-E3 prompt.\n\nThis is the posting:",
+              "role": "system"
+            },
+            {
+              "content": "={{ $json.postingText }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        224,
+        0
+      ],
+      "id": "d92c3061-25cd-4420-904d-2fdc5e005297",
+      "name": "Instagram Image Prompt Generator",
+      "credentials": {
+        "openAiApi": {
+          "id": "D5ckHtSIbdQ8oRob",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "prompt": "={{ $input.first().json.message.content }}",
+        "options": {
+          "dalleQuality": "hd",
+          "size": "1024x1024",
+          "style": "natural",
+          "returnImageUrls": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        576,
+        0
+      ],
+      "id": "1b4c4b8c-72fc-485b-b823-18db9ba1f848",
+      "name": "Generate Instagram Image",
+      "credentials": {
+        "openAiApi": {
+          "id": "D5ckHtSIbdQ8oRob",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "socialMediaPostId"
+            },
+            {
+              "name": "postingText"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "9657623a-e7a4-41cb-822c-e28e6918e4fd",
+      "name": "Start"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "app6l0TbCOoUGknyo",
+          "mode": "list",
+          "cachedResultName": "Podcast Management",
+          "cachedResultUrl": "https://airtable.com/app6l0TbCOoUGknyo"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblVJx0OoSN4EJbFT",
+          "mode": "list",
+          "cachedResultName": "Social Media Content",
+          "cachedResultUrl": "https://airtable.com/app6l0TbCOoUGknyo/tblVJx0OoSN4EJbFT"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Media Files": "=[{\n\"url\": \"{{ $json.url }}\"\n}]",
+            "id": "={{ $('Start').item.json.socialMediaPostId }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "Content",
+              "displayName": "Content",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Media Files",
+              "displayName": "Media Files",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Post Date",
+              "displayName": "Post Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Platform",
+              "displayName": "Platform",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "Facebook",
+                  "value": "Facebook"
+                },
+                {
+                  "name": "Twitter",
+                  "value": "Twitter"
+                },
+                {
+                  "name": "Instagram",
+                  "value": "Instagram"
+                },
+                {
+                  "name": "LinkedIn",
+                  "value": "LinkedIn"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Related Podcast",
+              "displayName": "Related Podcast",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "array",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "podcastId",
+              "displayName": "podcastId",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Podcast Release Date",
+              "displayName": "Podcast Release Date",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "In Arbeit",
+                  "value": "In Arbeit"
+                },
+                {
+                  "name": "In Review",
+                  "value": "In Review"
+                },
+                {
+                  "name": "Ready to Upload",
+                  "value": "Ready to Upload"
+                },
+                {
+                  "name": "Posted",
+                  "value": "Posted"
+                },
+                {
+                  "name": "Regenerate",
+                  "value": "Regenerate"
+                }
+              ],
+              "readOnly": false,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        864,
+        0
+      ],
+      "id": "4370122a-6cbc-4bc3-80d9-3982e03333b9",
+      "name": "Inject Posting Picture",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "7gZmilZ9E9qPB1GO",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Start": [
+      {
+        "json": {
+          "socialMediaPostId": "1234rec",
+          "postingText": "`Führung entsteht nicht aus Organigrammen, sondern aus Vertrauen und echter Verantwortung.` \n\n Im neuesten Mann Farid Podcast spricht Senior Vice President Andreas Burkhards über eine der bedeutendsten Marken Deutschlands mit fast 3000 Mitarbeitenden und einem Umsatz im Milliardenbereich. Täglich verlassen rund zwei Millionen Medikamente das Firmengelände – beeindruckende Zahlen, die zeigen, wie wichtig Führung in solchen Strukturen ist. \n\n Andreas betont, dass wahre Führung darin besteht, Menschen zu gewinnen, ohne formelle Macht ausüben zu müssen. Vertrauen ist das Fundament – nur so kann echte Verantwortung gelebt werden. Und am wichtigsten: Morgens in den Spiegel schauen zu können und mit sich im Reinen zu sein. Was bedeutet für euch Führung und Verantwortung in eurem Alltag? Diskutiert mit! 👥💡"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Instagram Image Prompt Generator": {
+      "main": [
+        [
+          {
+            "node": "Generate Instagram Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Instagram Image": {
+      "main": [
+        [
+          {
+            "node": "Inject Posting Picture",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "Instagram Image Prompt Generator",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9c02d68f-123b-4c85-89c6-3fe6549a1de7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "da14da50ff644f8ead41ebba61e53ef27ed32d4d0759e3920418b645f1e0ba14"
+  },
+  "id": "zSgA4yisMZzDkrNf",
+  "tags": []
+}
