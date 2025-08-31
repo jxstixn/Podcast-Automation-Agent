@@ -13,11 +13,13 @@ podcast content automation.
 
     .
     ├── Generate Instagram Posting Image Workflow.json
+    ├── Layperson Study.pdf
+    ├── Study Workflow.json
     ├── System-Prompt-Orchestrator.md
     ├── System-Prompt-Instagram-Agent.md
     ├── System-Prompt-Instagram-Image-Generator.md
     ├── System-Prompt-LinkedIn-Agent.md
-    ├── System-Prompt-X-Agent.md
+    └── System-Prompt-X-Agent.md
 
 ### Files
 
@@ -33,6 +35,10 @@ podcast content automation.
     threads.
 -   **Generate Instagram Posting Image Workflow.json** → n8n workflow
     for turning German podcast text into Instagram-ready images.
+-   **Study Workflow.json** → Example n8n workflow for our conducted
+    study.
+-   **Layperson Study.pdf** → Blueprint for the layperson study conducted
+    for this project.
 
 ------------------------------------------------------------------------
 

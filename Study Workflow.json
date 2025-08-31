@@ -1,0 +1,80 @@
+{
+  "name": "Study Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        }
+      },
+      "id": "6589850a-8151-445d-af28-a59e450a5ba4",
+      "name": "OneDrive File Monitor",
+      "type": "n8n-nodes-base.microsoftOneDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        304,
+        352
+      ],
+      "credentials": {
+        "microsoftOneDriveOAuth2Api": {
+          "id": "lJZK8LnHzjcRVa40",
+          "name": "Microsoft Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fromEmail": "marc_howard@web.de",
+        "toEmail": "marc_howard@web.de",
+        "subject": "=New File Added to OneDrive: {{ $('OneDrive File Monitor').item.json.name }}",
+        "emailFormat": "text",
+        "text": "=A new file has been added to your OneDrive:\n\nFile Name: {{ $('OneDrive File Monitor').item.json.name }}\nFile Size: {{ $('OneDrive File Monitor').item.json.size }} bytes\nUpload Date: {{ $('OneDrive File Monitor').item.json.createdDateTime }}\n\nThis notification was sent automatically when the file was detected.",
+        "options": {}
+      },
+      "id": "8458f84f-3b42-4ad0-8704-7de592757038",
+      "name": "Send Web.de Email Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        512,
+        352
+      ],
+      "webhookId": "a88df238-8721-4fe0-9242-46da1947b1bf",
+      "credentials": {
+        "smtp": {
+          "id": "k9dGTtvYmucOkXjI",
+          "name": "SMTP account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OneDrive File Monitor": {
+      "main": [
+        [
+          {
+            "node": "Send Web.de Email Notification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "ab1b8e86-6411-4de4-83bc-e5faa3117139",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "da14da50ff644f8ead41ebba61e53ef27ed32d4d0759e3920418b645f1e0ba14"
+  },
+  "id": "b94hcP0EmKueyASB",
+  "tags": []
+}
